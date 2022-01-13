@@ -28,10 +28,10 @@ namespace BulkyBookWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Cover obj)
         {
-            if (obj.Name == obj.Name.ToString())
-            {
-                ModelState.AddModelError("Name", "The display order cannot match the name.");
-            }
+            //if (obj.Name == obj.Name.ToString())
+            //{
+            //    ModelState.AddModelError("Name", "The display order cannot match the name.");
+            //}
 
             if (ModelState.IsValid)
             {
@@ -63,10 +63,10 @@ namespace BulkyBookWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Cover obj)
         {
-            if (obj.Name == obj.Name.ToString())
-            {
-                ModelState.AddModelError("Name", "The display order cannot match the name.");
-            }
+            //if (obj.Name == obj.Name.ToString())
+            //{
+            //    ModelState.AddModelError("Name", "The display order cannot match the name.");
+            //}
 
             if (ModelState.IsValid)
             {
@@ -99,10 +99,10 @@ namespace BulkyBookWeb.Controllers
         public IActionResult DeletePost(int id)
         {
             var obj = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
-            if (obj.Name == obj.Name.ToString())
-            {
-                ModelState.AddModelError("Name", "The display order cannot match the name.");
-            }
+            //if (obj.Name == obj.Name.ToString())
+            //{
+            //    ModelState.AddModelError("Name", "The display order cannot match the name.");
+            //}
 
             if (ModelState.IsValid)
             {
