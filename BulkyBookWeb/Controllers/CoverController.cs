@@ -15,8 +15,8 @@ namespace BulkyBookWeb.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Cover> objCategoryList = _unitOfWork.Cover.GetAll();
-            return View(objCategoryList);
+            IEnumerable<Cover> objCoverList = _unitOfWork.Cover.GetAll();
+            return View(objCoverList);
         }
 
         public IActionResult Create()
@@ -28,14 +28,14 @@ namespace BulkyBookWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Cover obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
+            if (obj.Name == obj.Name.ToString())
             {
                 ModelState.AddModelError("Name", "The display order cannot match the name.");
             }
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Cover.Add(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
@@ -49,28 +49,28 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _unitOfWork.Category.GetFirstorDefault(u => u.Id == id);
+            var coverFromDb = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
 
-            if (categoryFromDb == null)
+            if (coverFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(coverFromDb);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(Cover obj)
         {
-            if (obj.Name == obj.DisplayOrder.ToString())
+            if (obj.Name == obj.Name.ToString())
             {
                 ModelState.AddModelError("Name", "The display order cannot match the name.");
             }
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Cover.Update(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Category Edited Successfully";
                 return RedirectToAction("Index");
@@ -84,13 +84,13 @@ namespace BulkyBookWeb.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _unitOfWork.Category.GetFirstorDefault(u => u.Id == id);
+            var coverFromDb = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
 
-            if (categoryFromDb == null)
+            if (coverFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(coverFromDb);
         }
 
 
@@ -98,15 +98,15 @@ namespace BulkyBookWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int id)
         {
-            var obj = _unitOfWork.Category.GetFirstorDefault(u => u.Id == id);
-            if (obj.Name == obj.DisplayOrder.ToString())
+            var obj = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
+            if (obj.Name == obj.Name.ToString())
             {
                 ModelState.AddModelError("Name", "The display order cannot match the name.");
             }
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Remove(obj);
+                _unitOfWork.Cover.Remove(obj);
                 _unitOfWork.Save();
                 TempData["success"] = "Category Deleted Successfully";
                 return RedirectToAction("Index");
@@ -115,4 +115,4 @@ namespace BulkyBookWeb.Controllers
         }
     }
 }
-}
+
