@@ -4,8 +4,9 @@ using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BulkyBookWeb.Controllers
-{
+namespace BulkyBookWeb.Controllers;
+[Area("Admin")]
+
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -116,4 +117,4 @@ namespace BulkyBookWeb.Controllers
             return View(obj);
         }
     }
-}
+
