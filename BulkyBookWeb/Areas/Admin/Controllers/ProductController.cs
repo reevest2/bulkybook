@@ -50,7 +50,7 @@ public class ProductController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Upsert(Cover obj)
+    public IActionResult Upsert(ProductViewModel obj, IFormFile file)
     {
         //if (obj.Name == obj.Name.ToString())
         //{
@@ -59,7 +59,7 @@ public class ProductController : Controller
 
         if (ModelState.IsValid)
         {
-            _unitOfWork.Cover.Update(obj);
+            //_unitOfWork.Cover.Update(obj);
             _unitOfWork.Save();
             TempData["success"] = "Category Edited Successfully";
             return RedirectToAction("Index");
