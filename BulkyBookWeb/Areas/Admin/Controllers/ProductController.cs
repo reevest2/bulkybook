@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace BulkyBookWeb.Controllers;
 [Area("Admin")]
 
-    public class CoverController : Controller
+    public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CoverController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -20,49 +20,21 @@ namespace BulkyBookWeb.Controllers;
             return View(objCoverList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Cover obj)
-        {
-            //if (obj.Name == obj.Name.ToString())
-            //{
-            //    ModelState.AddModelError("Name", "The display order cannot match the name.");
-            //}
-
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Cover.Add(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Category Created Successfully";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-        }
-
-        public IActionResult Edit(int? id)
-        {
+        Product product = new();
             if (id == null || id == 0)
             {
-                return NotFound();
+                return View(product);
             }
-            var coverFromDb = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
-
-            if (coverFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(coverFromDb);
+           
+            return View(product);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Cover obj)
+        public IActionResult Upsert(Cover obj)
         {
             //if (obj.Name == obj.Name.ToString())
             //{
@@ -79,7 +51,7 @@ namespace BulkyBookWeb.Controllers;
             return View(obj);
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null || id == 0)
             {

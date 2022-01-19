@@ -46,7 +46,7 @@ namespace BulkyBookWeb.Controllers;
             return View(obj);
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
             if (id == null || id == 0)
             {
@@ -81,7 +81,7 @@ namespace BulkyBookWeb.Controllers;
             return View(obj);
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
             {
