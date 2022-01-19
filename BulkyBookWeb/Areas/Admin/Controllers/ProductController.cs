@@ -41,7 +41,7 @@ public class ProductController : Controller
         if (id == null || id == 0)
         {
             ViewBag.CategoryList = CategoryList;
-            ViewBag.CoverList = CoverList;
+            ViewData["CoverList"] = CoverList;
             return View(product);
         }
 

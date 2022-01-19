@@ -20,23 +20,5 @@
                 <th>Category</th>
             </tr>
         </thread>
-        <tbody>
-            @foreach (var obj in Model)
-            {
-                <tr>
-                    <td width="50%">
-                        @obj.Name
-                    </td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Cover" asp-action="Edit" asp-route-id="@obj.Id"
-                           class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> Edit</a>
-                            <a asp-controller="Cover" asp-action="Delete" asp-route-id="@obj.Id"
-                           class="btn btn-danger mx-2"><i class="bi bi-trash"></i> Delete</a>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+     </table>
 </div>

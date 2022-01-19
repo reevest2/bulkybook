@@ -50,7 +50,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="CoverId"></label>
-            <select asp-for="CoverId" asp-items="ViewBag.CoverList" class="form-select">
+            <select asp-for="CoverId" asp-items="@(ViewData["CoverList"] as IEnumerable<SelectListItem>)" class="form-select">
                 <option disabled selected>--Select Cover--</option>
             </select>
             <span asp-validation-for="CoverId" class="text-danger"></span>
