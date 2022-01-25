@@ -103,22 +103,6 @@ public class ProductController : Controller
         return View(obj);
     }
 
-    public IActionResult Delete(int? id)
-    {
-        if (id == null || id == 0)
-        {
-            return NotFound();
-        }
-        var coverFromDb = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
-
-        if (coverFromDb == null)
-        {
-            return NotFound();
-        }
-        return View(coverFromDb);
-    }
-
-
     
     #region API CALLS
     [HttpGet]
@@ -129,7 +113,7 @@ public class ProductController : Controller
     }
 
     [HttpDelete]
-    public IActionResult DeletePost(int? id)
+    public IActionResult Delete(int? id)
     {
         var obj = _unitOfWork.Product.GetFirstorDefault(u => u.Id == id);
         if (obj == null)
@@ -147,9 +131,6 @@ public class ProductController : Controller
         _unitOfWork.Save();
         return Json(new { success = true, message = "Delete Successful" });
     }
-
-
-
     #endregion
 
 
