@@ -1,4 +1,5 @@
-﻿using BulkyBook.DataAccess.Repository.IRepository;
+﻿using BulkyBook.DataAccess.Repository;
+using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,7 @@ public class ProductController : Controller
 
     public IActionResult Index()
     {
-        IEnumerable<Cover> objCoverList = _unitOfWork.Cover.GetAll();
-        return View(objCoverList);
+        return View();
     }
 
     public IActionResult Upsert(int? id)
@@ -101,23 +101,33 @@ public class ProductController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult DeletePost(int id)
+    public IActionResult DeletePost(int? id)
     {
         var obj = _unitOfWork.Cover.GetFirstorDefault(u => u.Id == id);
-        //if (obj.Name == obj.Name.ToString())
-        //{
-        //    ModelState.AddModelError("Name", "The display order cannot match the name.");
-        //}
-
-        if (ModelState.IsValid)
+        if (obj == null)
         {
-            _unitOfWork.Cover.Remove(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Category Deleted Successfully";
-            return RedirectToAction("Index");
+            return NotFound();
         }
-        return View(obj);
+
+        _unitOfWork.Cover.Remove(obj);
+        _unitOfWork.Save();
+        TempData["success"] = "Category Deleted Successfully";
+        return RedirectToAction("Index");
     }
+
+    #region API CALLS
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var productList = _unitOfWork.Product.GetAll();
+        return Json(new { data = productList });
+    }
+
+    #endregion
+
+
 }
+
+
 
 
