@@ -4,7 +4,7 @@
     <input asp-for="Product.Id" hidden />
     <input asp-for="Product.ImageUrl" hidden />
     <div class="row">
-        <div class="col-10">
+        <div class="col-9">
 
             <div class="border p-3 mt-4 row">
                 <div class="col-12 pb-2">
@@ -82,8 +82,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-2 pt-2">
-            <img src="@Model.Product.ImageUrl" width="100" style="border-radius:5px; border:1px solid #bbb9b9" />
+        <div class="col-3 pt-2">
+            <img src="@Model.Product.ImageUrl" class="w-100" style="border-radius:5px; border:1px solid #bbb9b9" />
         </div>
     </div>
 </form>
