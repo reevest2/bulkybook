@@ -119,7 +119,7 @@ public class ProductController : Controller
     [HttpGet]
     public IActionResult GetAll()
     {
-        var productList = _unitOfWork.Product.GetAll();
+        var productList = _unitOfWork.Product.GetAll(includeProperties:"Category,Cover");
         return Json(new { data = productList });
     }
 
