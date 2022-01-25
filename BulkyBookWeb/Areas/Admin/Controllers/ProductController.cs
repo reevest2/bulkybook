@@ -56,7 +56,7 @@ public class ProductController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Upsert(ProductViewModel obj, IFormFile file)
+    public IActionResult Upsert(ProductViewModel obj, IFormFile? file)
     {
         //if (obj.Name == obj.Name.ToString())
         //{
@@ -83,12 +83,19 @@ public class ProductController : Controller
 
                 using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                 {
-                    fileStream.CopyTo(fileStream);
+                    file.CopyTo(fileStream);
                 }
                 obj.Product.ImageUrl = @"\images\products" + fileName + extension;
             }
 
-            _unitOfWork.Product.Add(obj.Product);
+            if (obj.Product.Id == 0)
+            {
+                _unitOfWork.Product.Add(obj.Product);
+            }
+            else
+            {
+                _unitOfWork.Product.Update(obj.Product);
+            }
             _unitOfWork.Save();
             TempData["success"] = "Product created Successfully";
             return RedirectToAction("Index");
