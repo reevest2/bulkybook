@@ -50,10 +50,10 @@ function Delete(url) {
                 success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
-                        toastr.success(message);
+                        toastr.success(data.message);
                     }
                     else {
-                        toastr.error(message);
+                        toastr.error(data.message);
                     }
                 }
             })
