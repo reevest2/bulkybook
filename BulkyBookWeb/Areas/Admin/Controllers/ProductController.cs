@@ -74,7 +74,7 @@ public class ProductController : Controller
 
                 if (obj.Product.ImageUrl != null)
                 {
-                    var oldImagePath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+                    var oldImagePath = Path.Combine(wwwRootPath,obj.Product.ImageUrl.TrimStart('\\'));
                     if (System.IO.File.Exists(oldImagePath))
                     {
                         System.IO.File.Delete(oldImagePath);
@@ -85,7 +85,7 @@ public class ProductController : Controller
                 {
                     file.CopyTo(fileStream);
                 }
-                obj.Product.ImageUrl = @"\images\products" + fileName + extension;
+                obj.Product.ImageUrl = @"\images\products\" + fileName + extension;
             }
 
             if (obj.Product.Id == 0)
