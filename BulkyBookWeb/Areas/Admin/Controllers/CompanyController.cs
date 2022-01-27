@@ -69,7 +69,7 @@ public class CompanyController : Controller
     [HttpGet]
     public IActionResult GetAll()
     {
-        var companyList = _unitOfWork.Product.GetAll();
+        var companyList = _unitOfWork.Company.GetAll();
         return Json(new { data = companyList });
     }
 
