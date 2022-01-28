@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -34,6 +35,7 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -41,7 +43,8 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -50,6 +53,7 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -116,6 +120,8 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
 
         }
 
@@ -139,6 +145,11 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
+                }),
+                CompanyList = _unitOfWork.Company.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
                 })
             };
         }
@@ -165,6 +176,15 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (Input.Role == null)
+                    {
+                        await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
