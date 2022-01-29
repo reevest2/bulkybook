@@ -33,6 +33,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             foreach(var cart in ShoppingCartViewModel.ListCart)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart.Count, cart.Product.Price, cart.Product.Price50, cart.Product.Price100);
+                ShoppingCartViewModel.CartTotal += (cart.Price * cart.Count);
             }
             return View(ShoppingCartViewModel);
         }
