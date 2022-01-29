@@ -1,7 +1,13 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
+using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
+using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 
 namespace BulkyBookWeb.Areas.Customer.Controllers
@@ -17,7 +23,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public CartController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork=unitOfWork; ;
+            _unitOfWork=unitOfWork;
         }
 
         public IActionResult Index()
@@ -36,6 +42,36 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 ShoppingCartViewModel.CartTotal += (cart.Price * cart.Count);
             }
             return View(ShoppingCartViewModel);
+        }
+
+        public IActionResult Plus(int cartId)
+        {
+            var cart = _unitOfWork.ShoppingCart.GetFirstorDefault(u => u.Id == cartId);
+            _unitOfWork.ShoppingCart.IncrementCount(cart, 1);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Minus(int cartId)
+        {
+            var cart = _unitOfWork.ShoppingCart.GetFirstorDefault(u => u.Id == cartId);
+            if (cart.Count <= 1)
+            {
+                _unitOfWork.ShoppingCart.Remove(cart);
+            }
+            else
+            {
+                _unitOfWork.ShoppingCart.DecrementCount(cart, 1);
+            }
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int cartId)
+        {
+            var cart = _unitOfWork.ShoppingCart.GetFirstorDefault(u => u.Id == cartId);
+            _unitOfWork.ShoppingCart.Remove(cart);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
         }
 
         private double GetPriceBasedOnQuantity(double quantity, double price, double price50, double price100)
